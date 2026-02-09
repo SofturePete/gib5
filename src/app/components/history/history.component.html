@@ -1,0 +1,123 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center space-x-3">
+        <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
+          ← Back
+        </button>
+        <span class="text-3xl">📜</span>
+        <h1 class="text-2xl font-bold text-gray-900">High-Five History</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Tabs -->
+    <div class="card mb-6">
+      <div class="flex space-x-4 border-b border-gray-200">
+        <button
+          (click)="setActiveTab('received')"
+          class="px-4 py-3 font-medium transition-colors"
+          [class.text-primary-600]="activeTab === 'received'"
+          [class.border-b-2]="activeTab === 'received'"
+          [class.border-primary-600]="activeTab === 'received'"
+          [class.text-gray-600]="activeTab !== 'received'"
+        >
+          <span class="text-xl mr-2">🎉</span>
+          Received ({{ receivedHighFives.length }})
+        </button>
+        <button
+          (click)="setActiveTab('given')"
+          class="px-4 py-3 font-medium transition-colors"
+          [class.text-primary-600]="activeTab === 'given'"
+          [class.border-b-2]="activeTab === 'given'"
+          [class.border-primary-600]="activeTab === 'given'"
+          [class.text-gray-600]="activeTab !== 'given'"
+        >
+          <span class="text-xl mr-2">👋</span>
+          Given ({{ givenHighFives.length }})
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-12">
+      <div class="text-4xl mb-4">⏳</div>
+      <p class="text-gray-600">Loading history...</p>
+    </div>
+
+    <!-- Received Tab -->
+    <div *ngIf="!loading && activeTab === 'received'">
+      <div *ngIf="receivedHighFives.length === 0" class="card text-center py-12">
+        <div class="text-4xl mb-4">👀</div>
+        <p class="text-gray-600">No high-fives received yet.</p>
+        <p class="text-sm text-gray-500 mt-2">Keep up the great work and they'll come!</p>
+      </div>
+
+      <div *ngIf="receivedHighFives.length > 0" class="space-y-4">
+        <div *ngFor="let highFive of receivedHighFives" class="card hover:shadow-lg transition-shadow">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center text-2xl">
+                🙌
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  {{ highFive.from_user?.name }}
+                </h3>
+                <span class="text-sm text-gray-500">
+                  {{ formatDate(highFive.created_at) }}
+                </span>
+              </div>
+              <p class="text-sm text-gray-600 mb-2">{{ highFive.from_user?.email }}</p>
+              <p class="text-gray-800 bg-gray-50 p-3 rounded-lg">
+                "{{ highFive.message }}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Given Tab -->
+    <div *ngIf="!loading && activeTab === 'given'">
+      <div *ngIf="givenHighFives.length === 0" class="card text-center py-12">
+        <div class="text-4xl mb-4">🤔</div>
+        <p class="text-gray-600">You haven't given any high-fives yet.</p>
+        <p class="text-sm text-gray-500 mt-2">Time to spread some positivity!</p>
+        <button (click)="router.navigate(['/give'])" class="btn btn-primary mt-4">
+          Give Your First High-Five
+        </button>
+      </div>
+
+      <div *ngIf="givenHighFives.length > 0" class="space-y-4">
+        <div *ngFor="let highFive of givenHighFives" class="card hover:shadow-lg transition-shadow">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-gradient-to-br from-success-100 to-success-200 rounded-full flex items-center justify-center text-2xl">
+                👋
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  To: {{ highFive.to_user?.name }}
+                </h3>
+                <span class="text-sm text-gray-500">
+                  {{ formatDate(highFive.created_at) }}
+                </span>
+              </div>
+              <p class="text-sm text-gray-600 mb-2">{{ highFive.to_user?.email }}</p>
+              <p class="text-gray-800 bg-gray-50 p-3 rounded-lg">
+                "{{ highFive.message }}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

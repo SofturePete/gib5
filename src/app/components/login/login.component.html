@@ -1,0 +1,76 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-100 to-success-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <div class="card">
+      <div class="text-center mb-8">
+        <div class="text-6xl mb-4">🙌</div>
+        <h2 class="text-3xl font-bold text-gray-900">gib5</h2>
+        <p class="text-gray-600 mt-2">High-Five Recognition System</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="space-y-6">
+        <div *ngIf="isSignUp">
+          <label for="name" class="label">Name</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="name"
+            name="name"
+            required
+            class="input"
+            placeholder="Your full name"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="label">Email</label>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            class="input"
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="label">Password</label>
+          <input
+            id="password"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            class="input"
+            placeholder="••••••••"
+          />
+        </div>
+
+        <div *ngIf="error" class="rounded-md p-4" [class.bg-red-50]="!error.includes('created')" [class.bg-green-50]="error.includes('created')">
+          <p class="text-sm" [class.text-red-800]="!error.includes('created')" [class.text-green-800]="error.includes('created')">
+            {{ error }}
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="loading"
+          class="w-full btn btn-primary text-lg"
+        >
+          {{ loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In') }}
+        </button>
+
+        <div class="text-center">
+          <button
+            type="button"
+            (click)="toggleMode()"
+            class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          >
+            {{ isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

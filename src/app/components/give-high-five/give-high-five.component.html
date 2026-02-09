@@ -1,0 +1,119 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center space-x-3">
+        <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
+          ← Back
+        </button>
+        <span class="text-3xl">🙌</span>
+        <h1 class="text-2xl font-bold text-gray-900">Give a High-Five</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="card">
+      <div *ngIf="success" class="mb-6 bg-success-50 border-l-4 border-success-500 p-4 rounded">
+        <div class="flex items-center">
+          <span class="text-2xl mr-3">✅</span>
+          <div>
+            <h3 class="text-sm font-medium text-success-800">
+              High-Five Sent Successfully!
+            </h3>
+            <p class="mt-1 text-sm text-success-700">
+              Redirecting to dashboard...
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- User Selection -->
+        <div>
+          <label for="user" class="label">Select Recipient</label>
+          <select
+            id="user"
+            [(ngModel)]="selectedUserId"
+            name="user"
+            required
+            class="input"
+          >
+            <option value="">-- Choose a team member --</option>
+            <option *ngFor="let user of users" [value]="user.id">
+              {{ user.name }} ({{ user.email }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div>
+          <label for="message" class="label">Your Message</label>
+          <textarea
+            id="message"
+            [(ngModel)]="message"
+            name="message"
+            rows="4"
+            required
+            class="input"
+            placeholder="Write a positive message to recognize their great work..."
+          ></textarea>
+          <p class="mt-1 text-sm text-gray-500">
+            {{ message.length }}/500 characters
+          </p>
+        </div>
+
+        <!-- Predefined Messages -->
+        <div>
+          <label class="label">Quick Messages</label>
+          <div class="flex flex-wrap gap-2">
+            <button
+              *ngFor="let msg of predefinedMessages"
+              type="button"
+              (click)="usePredefinedMessage(msg)"
+              class="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition"
+            >
+              {{ msg }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="error" class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+          <p class="text-sm text-red-800">{{ error }}</p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex space-x-4">
+          <button
+            type="submit"
+            [disabled]="loading || !selectedUserId || !message.trim()"
+            class="flex-1 btn btn-success text-lg py-3"
+          >
+            <span class="text-2xl mr-2">🙌</span>
+            {{ loading ? 'Sending...' : 'Send High-Five' }}
+          </button>
+          <button
+            type="button"
+            (click)="goBack()"
+            class="btn btn-secondary py-3"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tips -->
+    <div class="mt-6 card bg-blue-50">
+      <h3 class="font-semibold text-blue-900 mb-2">💡 Tips for Great High-Fives</h3>
+      <ul class="space-y-1 text-sm text-blue-800">
+        <li>• Be specific about what you're recognizing</li>
+        <li>• Be genuine and authentic</li>
+        <li>• Focus on the impact of their work</li>
+        <li>• Remember to give at least one high-five per week!</li>
+      </ul>
+    </div>
+  </main>
+</div>

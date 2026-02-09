@@ -1,0 +1,122 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <span class="text-4xl">🙌</span>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">gib5</h1>
+            <p class="text-sm text-gray-600" *ngIf="currentUser">Welcome, {{ currentUser.name }}!</p>
+          </div>
+        </div>
+        <button (click)="logout()" class="btn btn-secondary">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div *ngIf="loading" class="text-center py-12">
+      <div class="text-4xl mb-4">⏳</div>
+      <p class="text-gray-600">Loading...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <!-- Weekly Stats Alert -->
+      <div *ngIf="weeklyStats.needsToGive" class="mb-6 bg-primary-50 border-l-4 border-primary-500 p-4 rounded">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <span class="text-2xl">⚠️</span>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-primary-800">
+              You haven't given any high-fives this week!
+            </h3>
+            <p class="mt-2 text-sm text-primary-700">
+              Remember: Everyone should give at least one high-five per week. Spread the positivity! 🙌
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="card bg-gradient-to-br from-success-50 to-success-100">
+          <div class="text-center">
+            <div class="text-4xl mb-2">👋</div>
+            <div class="text-3xl font-bold text-success-700">{{ weeklyStats.given }}</div>
+            <div class="text-sm text-success-600 font-medium">Given This Week</div>
+          </div>
+        </div>
+
+        <div class="card bg-gradient-to-br from-primary-50 to-primary-100">
+          <div class="text-center">
+            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-3xl font-bold text-primary-700">{{ weeklyStats.received }}</div>
+            <div class="text-sm text-primary-600 font-medium">Received This Week</div>
+          </div>
+        </div>
+
+        <div class="card bg-gradient-to-br from-purple-50 to-purple-100">
+          <div class="text-center">
+            <div class="text-4xl mb-2">{{ weeklyStats.received >= 1 ? '✅' : '❌' }}</div>
+            <div class="text-sm font-medium" [class.text-green-600]="weeklyStats.received >= 1" [class.text-red-600]="weeklyStats.received < 1">
+              {{ weeklyStats.received >= 1 ? 'Goal Achieved!' : 'Need 1 High-Five' }}
+            </div>
+            <div class="text-xs text-gray-600 mt-1">Weekly Goal Status</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <button (click)="navigateToGiveHighFive()" class="btn btn-primary py-4 text-lg">
+          <span class="text-2xl mr-2">🙌</span>
+          Give High-Five
+        </button>
+        <button (click)="navigateToHistory()" class="btn btn-secondary py-4 text-lg">
+          <span class="text-2xl mr-2">📜</span>
+          History
+        </button>
+        <button (click)="navigateToStats()" class="btn btn-secondary py-4 text-lg">
+          <span class="text-2xl mr-2">📊</span>
+          Statistics
+        </button>
+      </div>
+
+      <!-- Recent High-Fives -->
+      <div class="card">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Recent High-Fives Received</h2>
+        
+        <div *ngIf="recentHighFives.length === 0" class="text-center py-8 text-gray-500">
+          <div class="text-4xl mb-2">👀</div>
+          <p>No high-fives received yet. Keep up the great work!</p>
+        </div>
+
+        <div *ngIf="recentHighFives.length > 0" class="space-y-4">
+          <div *ngFor="let highFive of recentHighFives" class="border-l-4 border-primary-400 pl-4 py-3 bg-gray-50 rounded-r">
+            <div class="flex justify-between items-start">
+              <div class="flex-1">
+                <div class="flex items-center space-x-2 mb-1">
+                  <span class="text-2xl">🙌</span>
+                  <span class="font-semibold text-gray-900">{{ highFive.from_user?.name }}</span>
+                  <span class="text-gray-500 text-sm">{{ formatDate(highFive.created_at) }}</span>
+                </div>
+                <p class="text-gray-700 ml-8">{{ highFive.message }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="recentHighFives.length > 0" class="mt-4 text-center">
+          <button (click)="navigateToHistory()" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+            View All →
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
