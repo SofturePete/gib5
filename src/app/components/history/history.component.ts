@@ -4,9 +4,10 @@ import { HighFiveService } from '../../services/high-five.service';
 import { HighFive } from '../../models/high-five.model';
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+    selector: 'app-history',
+    templateUrl: './history.component.html',
+    styleUrls: ['./history.component.scss'],
+    standalone: false
 })
 export class HistoryComponent implements OnInit {
   receivedHighFives: HighFive[] = [];
@@ -16,7 +17,7 @@ export class HistoryComponent implements OnInit {
 
   constructor(
     private highFiveService: HighFiveService,
-    private router: Router
+    public router: Router
   ) {}
 
   async ngOnInit() {

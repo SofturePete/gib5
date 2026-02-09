@@ -6,9 +6,10 @@ import { HighFive } from '../../models/high-five.model';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: false
 })
 export class DashboardComponent implements OnInit {
   currentUser: User | null = null;
@@ -21,9 +22,9 @@ export class DashboardComponent implements OnInit {
   loading = true;
 
   constructor(
-    private supabase: SupabaseService,
-    private highFiveService: HighFiveService,
-    private router: Router
+    public supabase: SupabaseService,
+    public highFiveService: HighFiveService,
+    public router: Router
   ) {}
 
   async ngOnInit() {

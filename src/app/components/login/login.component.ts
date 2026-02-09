@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent {
   isSignUp = false;
@@ -16,8 +17,8 @@ export class LoginComponent {
   error = '';
 
   constructor(
-    private supabase: SupabaseService,
-    private router: Router
+    public supabase: SupabaseService,
+    public router: Router
   ) {}
 
   async onSubmit() {

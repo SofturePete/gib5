@@ -4,9 +4,10 @@ import { HighFiveService } from '../../services/high-five.service';
 import { WeeklyStats } from '../../models/high-five.model';
 
 @Component({
-  selector: 'app-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+    selector: 'app-stats',
+    templateUrl: './stats.component.html',
+    styleUrls: ['./stats.component.scss'],
+    standalone: false
 })
 export class StatsComponent implements OnInit {
   weeklyStats: WeeklyStats[] = [];
@@ -14,8 +15,8 @@ export class StatsComponent implements OnInit {
   currentWeekStart: string = '';
 
   constructor(
-    private highFiveService: HighFiveService,
-    private router: Router
+    public highFiveService: HighFiveService,
+    public router: Router
   ) {}
 
   async ngOnInit() {

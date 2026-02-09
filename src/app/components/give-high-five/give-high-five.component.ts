@@ -4,9 +4,10 @@ import { HighFiveService } from '../../services/high-five.service';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-give-high-five',
-  templateUrl: './give-high-five.component.html',
-  styleUrls: ['./give-high-five.component.scss']
+    selector: 'app-give-high-five',
+    templateUrl: './give-high-five.component.html',
+    styleUrls: ['./give-high-five.component.scss'],
+    standalone: false
 })
 export class GiveHighFiveComponent implements OnInit {
   users: User[] = [];
@@ -25,8 +26,8 @@ export class GiveHighFiveComponent implements OnInit {
   ];
 
   constructor(
-    private highFiveService: HighFiveService,
-    private router: Router
+    public highFiveService: HighFiveService,
+    public router: Router
   ) {}
 
   async ngOnInit() {
