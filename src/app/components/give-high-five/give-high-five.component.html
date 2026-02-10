@@ -23,45 +23,76 @@
               High-Five Sent Successfully!
             </h3>
             <p class="mt-1 text-sm text-success-700">
-              Redirecting to dashboard...
+              Sent to {{ mentionedUsers.length }} person(s). Redirecting to dashboard...
             </p>
           </div>
         </div>
       </div>
 
       <form (ngSubmit)="onSubmit()" class="space-y-6">
-        <!-- User Selection -->
+        <!-- Message with @-mention -->
         <div>
-          <label for="user" class="label">Select Recipient</label>
-          <select
-            id="user"
-            [(ngModel)]="selectedUserId"
-            name="user"
-            required
-            class="input"
-          >
-            <option value="">-- Choose a team member --</option>
-            <option *ngFor="let user of users" [value]="user.id">
-              {{ user.name }} ({{ user.email }})
-            </option>
-          </select>
+          <label for="message" class="label">Message *</label>
+          <div class="relative">
+            <textarea
+              #messageInput
+              id="message"
+              [(ngModel)]="message"
+              name="message"
+              (input)="handleInput($event)"
+              (keydown)="handleKeydown($event)"
+              rows="5"
+              required
+              class="input w-full min-h-[120px]"
+              placeholder="Write a message and mention people with @Name..."
+            ></textarea>
+
+            <!-- Autocomplete Dropdown -->
+            <div
+              *ngIf="showSuggestions && filteredUsers.length > 0"
+              class="absolute z-50 w-full max-h-60 overflow-auto bg-white rounded-lg shadow-lg border border-gray-200"
+              [style.bottom.px]="100"
+              [style.margin-bottom.rem]="0.5"
+            >
+              <div
+                *ngFor="let user of filteredUsers; let i = index"
+                (click)="selectUser(user)"
+                [class.bg-gray-100]="i === selectedIndex"
+                class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-gray-50 transition"
+              >
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                  {{ getUserInitials(user.name) }}
+                </div>
+                <div class="flex-1">
+                  <div class="font-medium text-gray-900">{{ user.name }}</div>
+                  <div class="text-sm text-gray-500">{{ user.email }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            Use @ to mention team members. {{ message.length }}/500 characters
+          </p>
         </div>
 
-        <!-- Message -->
-        <div>
-          <label for="message" class="label">Your Message</label>
-          <textarea
-            id="message"
-            [(ngModel)]="message"
-            name="message"
-            rows="4"
-            required
-            class="input"
-            placeholder="Write a positive message to recognize their great work..."
-          ></textarea>
-          <p class="mt-1 text-sm text-gray-500">
-            {{ message.length }}/500 characters
-          </p>
+        <!-- Mentioned Users Preview -->
+        <div *ngIf="mentionedUsers.length > 0" class="mb-4">
+          <p class="text-sm text-gray-600 mb-2">High-Five goes to:</p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              *ngFor="let user of mentionedUsers"
+              class="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+            >
+              <span>{{ user.name }}</span>
+              <button
+                type="button"
+                (click)="removeMention(user.id)"
+                class="ml-1 hover:text-blue-900 font-bold"
+              >
+                ×
+              </button>
+            </span>
+          </div>
         </div>
 
         <!-- Predefined Messages -->
@@ -88,11 +119,11 @@
         <div class="flex space-x-4">
           <button
             type="submit"
-            [disabled]="loading || !selectedUserId || !message.trim()"
+            [disabled]="loading || !canSend"
             class="flex-1 btn btn-success text-lg py-3"
           >
             <span class="text-2xl mr-2">🙌</span>
-            {{ loading ? 'Sending...' : 'Send High-Five' }}
+            {{ loading ? 'Sending...' : 'Send High-Five (' + mentionedUsers.length + ')' }}
           </button>
           <button
             type="button"
@@ -109,6 +140,7 @@
     <div class="mt-6 card bg-blue-50">
       <h3 class="font-semibold text-blue-900 mb-2">💡 Tips for Great High-Fives</h3>
       <ul class="space-y-1 text-sm text-blue-800">
+        <li>• Use @Name to mention one or more people in your message</li>
         <li>• Be specific about what you're recognizing</li>
         <li>• Be genuine and authentic</li>
         <li>• Focus on the impact of their work</li>
