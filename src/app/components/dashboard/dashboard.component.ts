@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     needsToGive: true
   };
   loading = true;
-  organizationName: string = '';
+  organizationName: string | null = null;
 
   constructor(
     public supabase: SupabaseService,
@@ -41,10 +41,13 @@ export class DashboardComponent implements OnInit {
       if (authUser) {
         this.currentUser = await this.highFiveService.getUserProfile(authUser.id);
         
-        // Organization laden
-        const org = await this.orgService.getCurrentUserOrganization();
-        if (org) {
-          this.organizationName = org.name;
+        // Organization laden (optional - funktioniert auch ohne Migration)
+        try {
+          const org = await this.orgService.getCurrentUserOrganization();
+          this.organizationName = org?.name || null;
+        } catch (error) {
+          console.warn('Organization feature not available:', error);
+          this.organizationName = null;
         }
       }
 

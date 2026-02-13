@@ -36,15 +36,25 @@ export class LoginComponent implements OnInit {
   }
 
   async loadOrganizations() {
-    this.organizations = await this.orgService.getAllOrganizations();
+    try {
+      this.organizations = await this.orgService.getAllOrganizations();
+    } catch (error) {
+      console.warn('Organizations not available (migration pending)');
+      this.organizations = [];
+    }
   }
 
   async onEmailChange() {
     if (this.isSignUp && this.email.includes('@')) {
       // Auto-Suggest Organization basierend auf Email-Domain
-      this.suggestedOrg = await this.orgService.getOrganizationByEmail(this.email);
-      if (this.suggestedOrg) {
-        this.selectedOrgId = this.suggestedOrg.id;
+      try {
+        this.suggestedOrg = await this.orgService.getOrganizationByEmail(this.email);
+        if (this.suggestedOrg) {
+          this.selectedOrgId = this.suggestedOrg.id;
+        }
+      } catch (error) {
+        console.warn('Organization suggestion not available (migration pending)');
+        this.suggestedOrg = null;
       }
     }
   }
@@ -62,21 +72,26 @@ export class LoginComponent implements OnInit {
           throw new Error('Registrierung fehlgeschlagen');
         }
 
-        // 2. Organization zuweisen oder erstellen
-        let orgId = this.selectedOrgId;
-        
-        if (this.createNewOrg) {
-          const newOrg = await this.orgService.createOrganization(
-            this.newOrgName,
-            this.newOrgDomain
-          );
-          if (newOrg) {
-            orgId = newOrg.id;
+        // 2. Organization zuweisen oder erstellen (optional - funktioniert auch ohne Migration)
+        try {
+          let orgId = this.selectedOrgId;
+          
+          if (this.createNewOrg) {
+            const newOrg = await this.orgService.createOrganization(
+              this.newOrgName,
+              this.newOrgDomain
+            );
+            if (newOrg) {
+              orgId = newOrg.id;
+            }
           }
-        }
 
-        if (orgId) {
-          await this.orgService.assignUserToOrganization(user.user!.id, orgId);
+          if (orgId) {
+            await this.orgService.assignUserToOrganization(user.user!.id, orgId);
+          }
+        } catch (orgError) {
+          console.warn('Organization assignment skipped (migration pending):', orgError);
+          // Kein Problem - App funktioniert auch ohne Organization
         }
 
         this.error = 'Account erstellt! Bitte prüfe deine E-Mails zur Verifizierung.';

@@ -158,13 +158,18 @@ export class HighFiveService {
   }
 
   async getUserProfile(userId: string): Promise<User | null> {
-    const { data, error } = await this.supabase.client
-      .from('users')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    try {
+      const { data, error } = await this.supabase.client
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
 
-    if (error) return null;
-    return data;
+      if (error) return null;
+      return data;
+    } catch (error) {
+      console.warn('Error fetching user profile:', error);
+      return null;
+    }
   }
 }
