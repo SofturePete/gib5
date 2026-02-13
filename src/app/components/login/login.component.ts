@@ -56,9 +56,9 @@ export class LoginComponent implements OnInit {
     try {
       if (this.isSignUp) {
         // 1. Account erstellen
-        const userId = await this.supabase.signUp(this.email, this.password, this.name);
+        const user = await this.supabase.signUp(this.email, this.password, this.name);
         
-        if (!userId) {
+        if (!user) {
           throw new Error('Registrierung fehlgeschlagen');
         }
 
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
         }
 
         if (orgId) {
-          await this.orgService.assignUserToOrganization(userId, orgId);
+          await this.orgService.assignUserToOrganization(user.user!.id, orgId);
         }
 
         this.error = 'Account erstellt! Bitte prüfe deine E-Mails zur Verifizierung.';

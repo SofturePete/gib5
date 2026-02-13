@@ -103,7 +103,7 @@ export class OrganizationService {
    * Organization des aktuellen Users abrufen
    */
   async getCurrentUserOrganization(): Promise<Organization | null> {
-    const user = await this.supabase.getCurrentUser();
+    const user = await this.supabase.currentUser;
     if (!user) return null;
 
     const { data: userData, error: userError } = await this.supabase.client
@@ -134,7 +134,7 @@ export class OrganizationService {
    * Alle Mitarbeiter der eigenen Organization
    */
   async getOrganizationMembers(): Promise<any[]> {
-    const user = await this.supabase.getCurrentUser();
+    const user = await this.supabase.currentUser;
     if (!user) return [];
 
     const { data: userData } = await this.supabase.client
@@ -163,7 +163,7 @@ export class OrganizationService {
    * Prüfen ob aktueller User Admin ist
    */
   async isCurrentUserAdmin(): Promise<boolean> {
-    const user = await this.supabase.getCurrentUser();
+    const user = await this.supabase.currentUser;
     if (!user) return false;
 
     const { data } = await this.supabase.client
