@@ -4,7 +4,7 @@
       <div class="text-center mb-8">
         <div class="text-6xl mb-4">🙌</div>
         <h2 class="text-3xl font-bold text-gray-900">gib5</h2>
-        <p class="text-gray-600 mt-2">High-Five Recognition System</p>
+        <p class="text-gray-600 mt-2">High-Five Anerkennungssystem</p>
       </div>
 
       <form (ngSubmit)="onSubmit()" class="space-y-6">
@@ -17,25 +17,26 @@
             name="name"
             required
             class="input"
-            placeholder="Your full name"
+            placeholder="Dein vollständiger Name"
           />
         </div>
 
         <div>
-          <label for="email" class="label">Email</label>
+          <label for="email" class="label">E-Mail</label>
           <input
             id="email"
             type="email"
             [(ngModel)]="email"
+            (ngModelChange)="onEmailChange()"
             name="email"
             required
             class="input"
-            placeholder="you@example.com"
+            placeholder="dein@beispiel.de"
           />
         </div>
 
         <div>
-          <label for="password" class="label">Password</label>
+          <label for="password" class="label">Passwort</label>
           <input
             id="password"
             type="password"
@@ -47,8 +48,85 @@
           />
         </div>
 
-        <div *ngIf="error" class="rounded-md p-4" [class.bg-red-50]="!error.includes('created')" [class.bg-green-50]="error.includes('created')">
-          <p class="text-sm" [class.text-red-800]="!error.includes('created')" [class.text-green-800]="error.includes('created')">
+        <!-- Organization Auswahl (nur bei Sign Up) -->
+        <div *ngIf="isSignUp" class="space-y-4">
+          <div class="border-t pt-4">
+            <h3 class="text-sm font-medium text-gray-700 mb-3">Organisation</h3>
+            
+            <!-- Auto-Suggestion basierend auf Email-Domain -->
+            <div *ngIf="suggestedOrg" class="bg-blue-50 border border-blue-200 rounded-md p-3 mb-3">
+              <p class="text-sm text-blue-800">
+                ✨ Wir haben <strong>{{ suggestedOrg.name }}</strong> für deine Domain gefunden!
+              </p>
+            </div>
+
+            <!-- Bestehende Organisation beitreten -->
+            <div *ngIf="!createNewOrg" class="space-y-2">
+              <label for="organization" class="label">Organisation beitreten</label>
+              <select
+                id="organization"
+                [(ngModel)]="selectedOrgId"
+                name="organization"
+                class="input"
+              >
+                <option value="">-- Bitte wählen --</option>
+                <option *ngFor="let org of organizations" [value]="org.id">
+                  {{ org.name }}
+                </option>
+              </select>
+              
+              <button
+                type="button"
+                (click)="toggleCreateOrg()"
+                class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+              >
+                + Neue Organisation erstellen
+              </button>
+            </div>
+
+            <!-- Neue Organisation erstellen -->
+            <div *ngIf="createNewOrg" class="space-y-3">
+              <div>
+                <label for="newOrgName" class="label">Name der neuen Organisation</label>
+                <input
+                  id="newOrgName"
+                  type="text"
+                  [(ngModel)]="newOrgName"
+                  name="newOrgName"
+                  required
+                  class="input"
+                  placeholder="z.B. Softure GmbH"
+                />
+              </div>
+
+              <div>
+                <label for="newOrgDomain" class="label">E-Mail-Domain (optional)</label>
+                <input
+                  id="newOrgDomain"
+                  type="text"
+                  [(ngModel)]="newOrgDomain"
+                  name="newOrgDomain"
+                  class="input"
+                  placeholder="z.B. softure.com"
+                />
+                <p class="text-xs text-gray-500 mt-1">
+                  Neue Mitarbeiter mit dieser Domain werden automatisch zugeordnet
+                </p>
+              </div>
+
+              <button
+                type="button"
+                (click)="toggleCreateOrg()"
+                class="text-sm text-gray-600 hover:text-gray-700 font-medium"
+              >
+                ← Zurück zur Auswahl
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="error" class="rounded-md p-4" [class.bg-red-50]="!error.includes('erstellt')" [class.bg-green-50]="error.includes('erstellt')">
+          <p class="text-sm" [class.text-red-800]="!error.includes('erstellt')" [class.text-green-800]="error.includes('erstellt')">
             {{ error }}
           </p>
         </div>
@@ -58,7 +136,7 @@
           [disabled]="loading"
           class="w-full btn btn-primary text-lg"
         >
-          {{ loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In') }}
+          {{ loading ? 'Lädt...' : (isSignUp ? 'Registrieren' : 'Anmelden') }}
         </button>
 
         <div class="text-center">
@@ -67,7 +145,7 @@
             (click)="toggleMode()"
             class="text-sm text-primary-600 hover:text-primary-700 font-medium"
           >
-            {{ isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up' }}
+            {{ isSignUp ? 'Bereits einen Account? Anmelden' : 'Noch kein Account? Registrieren' }}
           </button>
         </div>
       </form>

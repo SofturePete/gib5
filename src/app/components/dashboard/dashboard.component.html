@@ -7,11 +7,14 @@
           <span class="text-4xl">🙌</span>
           <div>
             <h1 class="text-2xl font-bold text-gray-900">gib5</h1>
-            <p class="text-sm text-gray-600" *ngIf="currentUser">Welcome, {{ currentUser.name }}!</p>
+            <p class="text-sm text-gray-600" *ngIf="currentUser">
+              Willkommen, {{ currentUser.name }}!
+              <span *ngIf="organizationName" class="text-gray-400">· {{ organizationName }}</span>
+            </p>
           </div>
         </div>
         <button (click)="logout()" class="btn btn-secondary">
-          Logout
+          Abmelden
         </button>
       </div>
     </div>
@@ -21,11 +24,11 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div *ngIf="loading" class="text-center py-12">
       <div class="text-4xl mb-4">⏳</div>
-      <p class="text-gray-600">Loading...</p>
+      <p class="text-gray-600">Lädt...</p>
     </div>
 
     <div *ngIf="!loading">
-      <!-- Weekly Stats Alert -->
+      <!-- Wochenstatistik-Warnung -->
       <div *ngIf="weeklyStats.needsToGive" class="mb-6 bg-primary-50 border-l-4 border-primary-500 p-4 rounded">
         <div class="flex">
           <div class="flex-shrink-0">
@@ -33,22 +36,22 @@
           </div>
           <div class="ml-3">
             <h3 class="text-sm font-medium text-primary-800">
-              You haven't given any high-fives this week!
+              Du hast diese Woche noch keine High-Fives vergeben!
             </h3>
             <p class="mt-2 text-sm text-primary-700">
-              Remember: Everyone should give at least one high-five per week. Spread the positivity! 🙌
+              Denk daran: Jeder sollte mindestens einen High-Five pro Woche vergeben. Verbreite Positivität! 🙌
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Quick Stats -->
+      <!-- Schnellstatistiken -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="card bg-gradient-to-br from-success-50 to-success-100">
           <div class="text-center">
             <div class="text-4xl mb-2">👋</div>
             <div class="text-3xl font-bold text-success-700">{{ weeklyStats.given }}</div>
-            <div class="text-sm text-success-600 font-medium">Given This Week</div>
+            <div class="text-sm text-success-600 font-medium">Diese Woche gegeben</div>
           </div>
         </div>
 
@@ -56,7 +59,7 @@
           <div class="text-center">
             <div class="text-4xl mb-2">🎉</div>
             <div class="text-3xl font-bold text-primary-700">{{ weeklyStats.received }}</div>
-            <div class="text-sm text-primary-600 font-medium">Received This Week</div>
+            <div class="text-sm text-primary-600 font-medium">Diese Woche erhalten</div>
           </div>
         </div>
 
@@ -64,36 +67,36 @@
           <div class="text-center">
             <div class="text-4xl mb-2">{{ weeklyStats.received >= 1 ? '✅' : '❌' }}</div>
             <div class="text-sm font-medium" [class.text-green-600]="weeklyStats.received >= 1" [class.text-red-600]="weeklyStats.received < 1">
-              {{ weeklyStats.received >= 1 ? 'Goal Achieved!' : 'Need 1 High-Five' }}
+              {{ weeklyStats.received >= 1 ? 'Ziel erreicht!' : 'Benötigt: 1 High-Five' }}
             </div>
-            <div class="text-xs text-gray-600 mt-1">Weekly Goal Status</div>
+            <div class="text-xs text-gray-600 mt-1">Wochenziel Status</div>
           </div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Aktions-Buttons -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <button (click)="navigateToGiveHighFive()" class="btn btn-primary py-4 text-lg">
           <span class="text-2xl mr-2">🙌</span>
-          Give High-Five
+          High-Five geben
         </button>
         <button (click)="navigateToHistory()" class="btn btn-secondary py-4 text-lg">
           <span class="text-2xl mr-2">📜</span>
-          History
+          Verlauf
         </button>
         <button (click)="navigateToStats()" class="btn btn-secondary py-4 text-lg">
           <span class="text-2xl mr-2">📊</span>
-          Statistics
+          Statistiken
         </button>
       </div>
 
-      <!-- Recent High-Fives -->
+      <!-- Letzte empfangene High-Fives -->
       <div class="card">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Recent High-Fives Received</h2>
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Zuletzt erhalten</h2>
         
         <div *ngIf="recentHighFives.length === 0" class="text-center py-8 text-gray-500">
           <div class="text-4xl mb-2">👀</div>
-          <p>No high-fives received yet. Keep up the great work!</p>
+          <p>Noch keine High-Fives erhalten. Mach weiter so!</p>
         </div>
 
         <div *ngIf="recentHighFives.length > 0" class="space-y-4">
@@ -113,7 +116,7 @@
 
         <div *ngIf="recentHighFives.length > 0" class="mt-4 text-center">
           <button (click)="navigateToHistory()" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
-            View All →
+            Alle anzeigen →
           </button>
         </div>
       </div>

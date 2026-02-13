@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
 import { HighFiveService } from '../../services/high-five.service';
+import { OrganizationService } from '../../services/organization.service';
 import { HighFive } from '../../models/high-five.model';
 import { User } from '../../models/user.model';
 
@@ -20,10 +21,12 @@ export class DashboardComponent implements OnInit {
     needsToGive: true
   };
   loading = true;
+  organizationName: string = '';
 
   constructor(
     public supabase: SupabaseService,
     public highFiveService: HighFiveService,
+    private orgService: OrganizationService,
     public router: Router
   ) {}
 
@@ -37,16 +40,22 @@ export class DashboardComponent implements OnInit {
       const authUser = this.supabase.currentUser;
       if (authUser) {
         this.currentUser = await this.highFiveService.getUserProfile(authUser.id);
+        
+        // Organization laden
+        const org = await this.orgService.getCurrentUserOrganization();
+        if (org) {
+          this.organizationName = org.name;
+        }
       }
 
-      // Load recent received high-fives
+      // Letzte empfangene High-Fives laden
       const received = await this.highFiveService.getReceivedHighFives();
       this.recentHighFives = received.slice(0, 5);
 
-      // Load weekly stats
+      // Wochenstatistiken laden
       this.weeklyStats = await this.highFiveService.getMyWeeklyStats();
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Fehler beim Laden der Daten:', error);
     } finally {
       this.loading = false;
     }
@@ -77,11 +86,13 @@ export class DashboardComponent implements OnInit {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
+    if (diffMins < 1) return 'Gerade eben';
+    if (diffMins < 60) return `vor ${diffMins} Min.`;
+    if (diffHours < 24) return `vor ${diffHours} Std.`;
+    if (diffDays === 1) return 'Gestern';
+    if (diffDays < 7) return `vor ${diffDays} Tagen`;
     
-    return date.toLocaleDateString();
+    // Format: 13.02.2026
+    return date.toLocaleDateString('de-DE');
   }
 }

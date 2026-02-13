@@ -4,10 +4,10 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center space-x-3">
         <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
-          ← Back
+          ← Zurück
         </button>
         <span class="text-3xl">📜</span>
-        <h1 class="text-2xl font-bold text-gray-900">High-Five History</h1>
+        <h1 class="text-2xl font-bold text-gray-900">High-Five Verlauf</h1>
       </div>
     </div>
   </header>
@@ -26,7 +26,7 @@
           [class.text-gray-600]="activeTab !== 'received'"
         >
           <span class="text-xl mr-2">🎉</span>
-          Received ({{ receivedHighFives.length }})
+          Erhalten ({{ receivedHighFives.length }})
         </button>
         <button
           (click)="setActiveTab('given')"
@@ -37,22 +37,22 @@
           [class.text-gray-600]="activeTab !== 'given'"
         >
           <span class="text-xl mr-2">👋</span>
-          Given ({{ givenHighFives.length }})
+          Gegeben ({{ givenHighFives.length }})
         </button>
       </div>
     </div>
 
     <div *ngIf="loading" class="text-center py-12">
       <div class="text-4xl mb-4">⏳</div>
-      <p class="text-gray-600">Loading history...</p>
+      <p class="text-gray-600">Lade Verlauf...</p>
     </div>
 
-    <!-- Received Tab -->
+    <!-- Erhalten Tab -->
     <div *ngIf="!loading && activeTab === 'received'">
       <div *ngIf="receivedHighFives.length === 0" class="card text-center py-12">
         <div class="text-4xl mb-4">👀</div>
-        <p class="text-gray-600">No high-fives received yet.</p>
-        <p class="text-sm text-gray-500 mt-2">Keep up the great work and they'll come!</p>
+        <p class="text-gray-600">Noch keine High-Fives erhalten.</p>
+        <p class="text-sm text-gray-500 mt-2">Mach weiter so, sie werden kommen!</p>
       </div>
 
       <div *ngIf="receivedHighFives.length > 0" class="space-y-4">
@@ -82,14 +82,14 @@
       </div>
     </div>
 
-    <!-- Given Tab -->
+    <!-- Gegeben Tab -->
     <div *ngIf="!loading && activeTab === 'given'">
       <div *ngIf="givenHighFives.length === 0" class="card text-center py-12">
         <div class="text-4xl mb-4">🤔</div>
-        <p class="text-gray-600">You haven't given any high-fives yet.</p>
-        <p class="text-sm text-gray-500 mt-2">Time to spread some positivity!</p>
+        <p class="text-gray-600">Du hast noch keine High-Fives gegeben.</p>
+        <p class="text-sm text-gray-500 mt-2">Zeit, etwas Positivität zu verbreiten!</p>
         <button (click)="router.navigate(['/give'])" class="btn btn-primary mt-4">
-          Give Your First High-Five
+          Deinen ersten High-Five geben
         </button>
       </div>
 
@@ -104,7 +104,7 @@
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  To: {{ highFive.to_user?.name }}
+                  An: {{ highFive.to_user?.name }}
                 </h3>
                 <span class="text-sm text-gray-500">
                   {{ formatDate(highFive.created_at) }}

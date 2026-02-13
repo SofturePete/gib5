@@ -4,10 +4,10 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center space-x-3">
         <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
-          ← Back
+          ← Zurück
         </button>
         <span class="text-3xl">📊</span>
-        <h1 class="text-2xl font-bold text-gray-900">Weekly Statistics</h1>
+        <h1 class="text-2xl font-bold text-gray-900">Wochenstatistiken</h1>
       </div>
     </div>
   </header>
@@ -16,43 +16,43 @@
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div *ngIf="loading" class="text-center py-12">
       <div class="text-4xl mb-4">⏳</div>
-      <p class="text-gray-600">Loading statistics...</p>
+      <p class="text-gray-600">Lade Statistiken...</p>
     </div>
 
     <div *ngIf="!loading">
-      <!-- Week Info -->
+      <!-- Wochen-Info -->
       <div class="mb-6 text-center">
-        <p class="text-gray-600">Week Starting: <span class="font-semibold">{{ currentWeekStart }}</span></p>
+        <p class="text-gray-600">Woche beginnend: <span class="font-semibold">{{ currentWeekStart }}</span></p>
       </div>
 
-      <!-- Overview Stats -->
+      <!-- Übersichtsstatistiken -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="card bg-gradient-to-br from-primary-50 to-primary-100 text-center">
           <div class="text-3xl mb-2">🙌</div>
           <div class="text-3xl font-bold text-primary-700">{{ getTotalGiven() }}</div>
-          <div class="text-sm text-primary-600 font-medium">Total High-Fives Given</div>
+          <div class="text-sm text-primary-600 font-medium">Gesamt High-Fives gegeben</div>
         </div>
 
         <div class="card bg-gradient-to-br from-success-50 to-success-100 text-center">
           <div class="text-3xl mb-2">🎉</div>
           <div class="text-3xl font-bold text-success-700">{{ getTotalReceived() }}</div>
-          <div class="text-sm text-success-600 font-medium">Total High-Fives Received</div>
+          <div class="text-sm text-success-600 font-medium">Gesamt High-Fives erhalten</div>
         </div>
 
         <div class="card bg-gradient-to-br from-purple-50 to-purple-100 text-center">
           <div class="text-3xl mb-2">🌟</div>
           <div class="text-3xl font-bold text-purple-700">{{ getGoalAchievers() }}/{{ weeklyStats.length }}</div>
-          <div class="text-sm text-purple-600 font-medium">Achieved Weekly Goal</div>
+          <div class="text-sm text-purple-600 font-medium">Wochenziel erreicht</div>
         </div>
       </div>
 
-      <!-- User Stats Table -->
+      <!-- Benutzerstatistik-Tabelle -->
       <div class="card">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Team Leaderboard</h2>
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Team-Bestenliste</h2>
         
         <div *ngIf="weeklyStats.length === 0" class="text-center py-8 text-gray-500">
           <div class="text-4xl mb-2">📋</div>
-          <p>No data available for this week yet.</p>
+          <p>Noch keine Daten für diese Woche verfügbar.</p>
         </div>
 
         <div *ngIf="weeklyStats.length > 0" class="overflow-x-auto">
@@ -60,16 +60,16 @@
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rank
+                  Rang
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Team Member
+                  Teammitglied
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Given
+                  Gegeben
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Received
+                  Erhalten
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -125,17 +125,17 @@
         </div>
       </div>
 
-      <!-- Legend -->
+      <!-- Legende -->
       <div class="mt-6 card bg-blue-50">
-        <h3 class="font-semibold text-blue-900 mb-3">📌 Legend</h3>
+        <h3 class="font-semibold text-blue-900 mb-3">📌 Legende</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-blue-800">
-          <div><span class="font-medium">🌟 All Goals Met:</span> Given ≥1 & Received ≥1</div>
-          <div><span class="font-medium">✅ Received Goal Met:</span> Received ≥1 high-five</div>
-          <div><span class="font-medium">👋 Has Given:</span> Given ≥1 high-five</div>
-          <div><span class="font-medium">⚠️ Needs Attention:</span> No high-fives yet</div>
+          <div><span class="font-medium">🌟 Alle Ziele erfüllt:</span> Gegeben ≥1 & Erhalten ≥1</div>
+          <div><span class="font-medium">✅ Ziel erreicht:</span> Erhalten ≥1 High-Five</div>
+          <div><span class="font-medium">👋 Hat gegeben:</span> Gegeben ≥1 High-Five</div>
+          <div><span class="font-medium">⚠️ Benötigt Aufmerksamkeit:</span> Noch keine High-Fives</div>
         </div>
         <p class="mt-3 text-sm text-blue-700">
-          <strong>Weekly Goal:</strong> Everyone must receive at least 1 high-five per week!
+          <strong>Wochenziel:</strong> Jeder muss mindestens 1 High-Five pro Woche erhalten!
         </p>
       </div>
     </div>

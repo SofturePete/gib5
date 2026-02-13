@@ -4,10 +4,10 @@
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center space-x-3">
         <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
-          ← Back
+          ← Zurück
         </button>
         <span class="text-3xl">🙌</span>
-        <h1 class="text-2xl font-bold text-gray-900">Give a High-Five</h1>
+        <h1 class="text-2xl font-bold text-gray-900">High-Five geben</h1>
       </div>
     </div>
   </header>
@@ -20,19 +20,19 @@
           <span class="text-2xl mr-3">✅</span>
           <div>
             <h3 class="text-sm font-medium text-success-800">
-              High-Five Sent Successfully!
+              High-Five erfolgreich gesendet!
             </h3>
             <p class="mt-1 text-sm text-success-700">
-              Sent to {{ mentionedUsers.length }} person(s). Redirecting to dashboard...
+              Gesendet an {{ mentionedUsers.length }} Person(en). Weiterleitung zur Übersicht...
             </p>
           </div>
         </div>
       </div>
 
       <form (ngSubmit)="onSubmit()" class="space-y-6">
-        <!-- Message with @-mention -->
+        <!-- Nachricht mit @-Erwähnung -->
         <div>
-          <label for="message" class="label">Message *</label>
+          <label for="message" class="label">Nachricht *</label>
           <div class="relative">
             <textarea
               #messageInput
@@ -44,7 +44,7 @@
               rows="5"
               required
               class="input w-full min-h-[120px]"
-              placeholder="Write a message and mention people with @Name..."
+              placeholder="Schreibe eine Nachricht und erwähne Personen mit @Name..."
             ></textarea>
 
             <!-- Autocomplete Dropdown -->
@@ -71,13 +71,13 @@
             </div>
           </div>
           <p class="mt-1 text-sm text-gray-500">
-            Use @ to mention team members. {{ message.length }}/500 characters
+            Verwende @ um Teammitglieder zu erwähnen. {{ message.length }}/500 Zeichen
           </p>
         </div>
 
-        <!-- Mentioned Users Preview -->
+        <!-- Erwähnte Benutzer Vorschau -->
         <div *ngIf="mentionedUsers.length > 0" class="mb-4">
-          <p class="text-sm text-gray-600 mb-2">High-Five goes to:</p>
+          <p class="text-sm text-gray-600 mb-2">High-Five geht an:</p>
           <div class="flex flex-wrap gap-2">
             <span
               *ngFor="let user of mentionedUsers"
@@ -95,9 +95,9 @@
           </div>
         </div>
 
-        <!-- Predefined Messages -->
+        <!-- Vordefinierte Nachrichten -->
         <div>
-          <label class="label">Quick Messages</label>
+          <label class="label">Schnellnachrichten</label>
           <div class="flex flex-wrap gap-2">
             <button
               *ngFor="let msg of predefinedMessages"
@@ -110,12 +110,12 @@
           </div>
         </div>
 
-        <!-- Error Message -->
+        <!-- Fehlermeldung -->
         <div *ngIf="error" class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
           <p class="text-sm text-red-800">{{ error }}</p>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Absenden Button -->
         <div class="flex space-x-4">
           <button
             type="submit"
@@ -123,28 +123,28 @@
             class="flex-1 btn btn-success text-lg py-3"
           >
             <span class="text-2xl mr-2">🙌</span>
-            {{ loading ? 'Sending...' : 'Send High-Five (' + mentionedUsers.length + ')' }}
+            {{ loading ? 'Sende...' : 'High-Five senden (' + mentionedUsers.length + ')' }}
           </button>
           <button
             type="button"
             (click)="goBack()"
             class="btn btn-secondary py-3"
           >
-            Cancel
+            Abbrechen
           </button>
         </div>
       </form>
     </div>
 
-    <!-- Tips -->
+    <!-- Tipps -->
     <div class="mt-6 card bg-blue-50">
-      <h3 class="font-semibold text-blue-900 mb-2">💡 Tips for Great High-Fives</h3>
+      <h3 class="font-semibold text-blue-900 mb-2">💡 Tipps für tolle High-Fives</h3>
       <ul class="space-y-1 text-sm text-blue-800">
-        <li>• Use @Name to mention one or more people in your message</li>
-        <li>• Be specific about what you're recognizing</li>
-        <li>• Be genuine and authentic</li>
-        <li>• Focus on the impact of their work</li>
-        <li>• Remember to give at least one high-five per week!</li>
+        <li>• Verwende @Name um eine oder mehrere Personen zu erwähnen</li>
+        <li>• Sei spezifisch, was du anerkennst</li>
+        <li>• Sei authentisch und aufrichtig</li>
+        <li>• Fokussiere auf die Wirkung ihrer Arbeit</li>
+        <li>• Denk dran: Mindestens ein High-Five pro Woche!</li>
       </ul>
     </div>
   </main>
